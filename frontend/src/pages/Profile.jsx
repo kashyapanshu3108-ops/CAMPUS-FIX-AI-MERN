@@ -11,9 +11,9 @@ export default function Profile() {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
 
-  // PROPER FIX: LocalStorage se purani photo load karna (agar hai toh)
+  // FIX: User ke email ke hisaab se unique photo load karna
   const [profilePic, setProfilePic] = useState(() => {
-    return localStorage.getItem("userProfilePic") || null;
+    return localStorage.getItem(`profilePic_${user?.email}`) || null;
   });
   const fileInputRef = useRef(null);
 
@@ -42,7 +42,7 @@ export default function Profile() {
     setPasswordModalOpen(false);
   };
 
-  // PROPER FIX: Image ko Base64 mein convert karke LocalStorage mein save karna
+  // FIX: Image ko Base64 mein convert karke unique key (email) ke sath save karna
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -51,10 +51,13 @@ export default function Profile() {
       reader.onloadend = () => {
         const base64String = reader.result;
         setProfilePic(base64String);
-        localStorage.setItem("userProfilePic", base64String); // Refresh ke baad ke liye save kar liya
+        localStorage.setItem(`profilePic_${user?.email}`, base64String); 
+        
+        // Topbar ko notify karna ki photo change hui hai
+        window.dispatchEvent(new Event("profilePicUpdated"));
       };
       
-      reader.readAsDataURL(file); // File ko read karna shuru kiya
+      reader.readAsDataURL(file);
     }
   };
 

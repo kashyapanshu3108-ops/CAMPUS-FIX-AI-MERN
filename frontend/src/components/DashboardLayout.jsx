@@ -46,6 +46,9 @@ export default function DashboardLayout({ children, title }) {
     localStorage.getItem("theme") === "dark"
   );
 
+  // 📷 Topbar Avatar State
+  const [topbarPic, setTopbarPic] = useState(() => localStorage.getItem(`profilePic_${user?.email}`) || null);
+
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add("dark-theme");
@@ -55,6 +58,16 @@ export default function DashboardLayout({ children, title }) {
       localStorage.setItem("theme", "light");
     }
   }, [isDarkMode]);
+
+  // FIX: Listen for profile photo updates
+  useEffect(() => {
+    const updatePic = () => {
+      setTopbarPic(localStorage.getItem(`profilePic_${user?.email}`));
+    };
+    window.addEventListener("profilePicUpdated", updatePic);
+    updatePic(); 
+    return () => window.removeEventListener("profilePicUpdated", updatePic);
+  }, [user?.email]);
 
   let links = STUDENT_LINKS;
   if (user?.role === "admin") links = ADMIN_LINKS;
@@ -109,8 +122,13 @@ export default function DashboardLayout({ children, title }) {
 
             <NotificationBell />
             
-            <div className="avatar" onClick={() => navigate("/profile")} title={user?.name || "Profile"} style={{ cursor: "pointer" }}>
-              {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+            {/* FIX: Show Image in Topbar Avatar */}
+            <div className="avatar" onClick={() => navigate("/profile")} title={user?.name || "Profile"} style={{ cursor: "pointer", overflow: "hidden" }}>
+              {topbarPic ? (
+                <img src={topbarPic} alt="User" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              ) : (
+                user?.name ? user.name.charAt(0).toUpperCase() : "U"
+              )}
             </div>
           </div>
         </header>
