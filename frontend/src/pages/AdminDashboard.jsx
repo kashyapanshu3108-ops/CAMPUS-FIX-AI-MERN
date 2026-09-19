@@ -75,7 +75,7 @@ export default function AdminDashboard() {
           onClick={downloadPDF} 
           disabled={isDownloading}
           style={{ 
-            padding: "10px 18px", background: isDownloading ? "#9ca3af" : "#4f46e5", color: "white", 
+            padding: "10px 18px", background: isDownloading ? "#9ca3af" : "var(--primary)", color: "white", 
             border: "none", borderRadius: "8px", cursor: isDownloading ? "not-allowed" : "pointer", 
             fontWeight: "bold", display: "flex", alignItems: "center", gap: "8px",
             boxShadow: "0 4px 12px rgba(79, 70, 229, 0.25)"
@@ -85,8 +85,8 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      {/* Jisko PDF me convert karna hai uspe ref lagaya hai */}
-      <div ref={reportRef} style={{ background: "#f8fafc", padding: "10px" }}>
+      {/* PROPER DARK MODE FIX: Replaced #f8fafc with var(--bg) */}
+      <div ref={reportRef} style={{ background: "var(--bg)", padding: "10px", borderRadius: "12px" }}>
         
         {/* Stats Row 1 */}
         <div className="cards-row" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "15px", marginBottom: "15px" }}>
@@ -98,11 +98,11 @@ export default function AdminDashboard() {
             <span className="stat-label">Pending</span>
             <span className="stat-value">{stats.pending}</span>
           </div>
-          <div className="stat-card stat-urgent" style={{ borderLeft: "4px solid #ef4444" }}>
+          <div className="stat-card stat-urgent" style={{ borderLeft: "4px solid var(--error)" }}>
             <span className="stat-label">Urgent</span>
             <span className="stat-value">{stats.urgent}</span>
           </div>
-          <div className="stat-card" style={{ borderLeft: "4px solid #10b981" }}>
+          <div className="stat-card" style={{ borderLeft: "4px solid var(--success)" }}>
             <span className="stat-label">Resolved</span>
             <span className="stat-value">{stats.resolved}</span>
           </div>
@@ -124,13 +124,13 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* AI Insights Panel */}
+        {/* AI Insights Panel - PROPER DARK MODE FIX */}
         {insights.length > 0 && (
-          <div className="card-panel insights-panel" style={{ background: "#eef2ff", border: "1px solid #c7d2fe", marginBottom: "30px" }}>
-            <h3 style={{ margin: "0 0 15px 0", color: "#3730a3", display: "flex", alignItems: "center", gap: "10px" }}>
+          <div className="card-panel insights-panel" style={{ marginBottom: "30px", border: "1px solid var(--primary-light)" }}>
+            <h3 style={{ margin: "0 0 15px 0", color: "var(--primary)", display: "flex", alignItems: "center", gap: "10px" }}>
               💡 AI Insights
             </h3>
-            <ul style={{ margin: 0, paddingLeft: "20px", color: "#374151", lineHeight: "1.6" }}>
+            <ul style={{ margin: 0, paddingLeft: "20px", color: "var(--text)", lineHeight: "1.6" }}>
               {insights.map((line, idx) => <li key={idx} style={{ marginBottom: "8px" }}>{line}</li>)}
             </ul>
           </div>
@@ -140,7 +140,7 @@ export default function AdminDashboard() {
         {urgent.length > 0 && (
           <div style={{ marginBottom: "30px" }}>
             <div className="section-header" style={{ marginBottom: "15px" }}>
-              <h2 style={{ color: "#dc2626", margin: 0 }}>🚨 Urgent Issues</h2>
+              <h2 style={{ color: "var(--error)", margin: 0 }}>🚨 Urgent Issues</h2>
             </div>
             <div className="issue-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "15px" }}>
               {urgent.map((issue) => <IssueCard key={issue._id} issue={issue} />)}
