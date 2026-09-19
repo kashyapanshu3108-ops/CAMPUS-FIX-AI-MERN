@@ -173,7 +173,7 @@ button { font-family: inherit; }
 .issue-card { cursor: pointer; display: flex; flex-direction: column; gap: 0.5rem; }
 .issue-card-top { display: flex; justify-content: space-between; gap: 0.5rem; align-items: flex-start; }
 .issue-card-top h3 { margin: 0; font-size: 1.05rem; }
-.issue-card-desc { font-size: 0.88rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+/* .issue-card-desc { font-size: 0.88rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; } */
 
 .badge { padding: 0.25rem 0.65rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
 .badge-dup { background: #e0e7ff; color: var(--primary-dark); }
