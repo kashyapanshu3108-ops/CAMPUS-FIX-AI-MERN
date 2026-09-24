@@ -10,6 +10,10 @@ export default function Profile() {
   // Modal States
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
+  
+  // Naye Photo Menu aur View Modal ke states
+  const [isPhotoMenuOpen, setPhotoMenuOpen] = useState(false);
+  const [isViewPhotoModalOpen, setViewPhotoModalOpen] = useState(false);
 
   // FIX: User ke email ke hisaab se unique photo load karna
   const [profilePic, setProfilePic] = useState(() => {
@@ -74,22 +78,51 @@ export default function Profile() {
           onChange={handleImageChange}
         />
 
-        {/* Avatar with Upload overlay */}
-        <div 
-          style={{ position: "relative", width: "80px", margin: "0 auto", cursor: "pointer" }}
-          onClick={() => fileInputRef.current.click()}
-          title="Change Profile Picture"
-        >
-          <div className="avatar" style={{ width: "80px", height: "80px", fontSize: "32px", margin: "0 auto 15px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        {/* Avatar with Click Menu */}
+        <div style={{ position: "relative", width: "80px", margin: "0 auto 15px" }}>
+          <div 
+            className="avatar" 
+            onClick={() => setPhotoMenuOpen(!isPhotoMenuOpen)}
+            style={{ 
+              width: "80px", height: "80px", fontSize: "32px", overflow: "hidden", 
+              display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+              boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
+            }}
+          >
             {profilePic ? (
               <img src={profilePic} alt="Profile Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             ) : (
               user?.name?.charAt(0).toUpperCase() || "U"
             )}
           </div>
-          <div style={{ position: "absolute", bottom: "15px", right: "-5px", background: "var(--primary)", color: "white", borderRadius: "50%", padding: "5px", fontSize: "12px", border: "2px solid var(--card-bg)" }}>
+          
+          <div 
+            onClick={() => setPhotoMenuOpen(!isPhotoMenuOpen)}
+            style={{ position: "absolute", bottom: "0px", right: "-5px", background: "var(--primary)", color: "white", borderRadius: "50%", padding: "5px", fontSize: "12px", border: "2px solid var(--card-bg)", cursor: "pointer" }}>
             📷
           </div>
+
+          {/* Photo Options Menu */}
+          {isPhotoMenuOpen && (
+            <div className="card-panel" style={{
+              position: "absolute", top: "90px", left: "50%", transform: "translateX(-50%)", 
+              width: "160px", padding: "8px", zIndex: 100, display: "flex", flexDirection: "column", gap: "5px",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.2)"
+            }}>
+              <button 
+                onClick={() => { setViewPhotoModalOpen(true); setPhotoMenuOpen(false); }} 
+                className="btn btn-ghost" style={{ padding: "8px 12px", fontSize: "13px", textAlign: "left", display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                🖼️ View Photo
+              </button>
+              <button 
+                onClick={() => { fileInputRef.current.click(); setPhotoMenuOpen(false); }} 
+                className="btn btn-ghost" style={{ padding: "8px 12px", fontSize: "13px", textAlign: "left", display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                📷 Change Photo
+              </button>
+            </div>
+          )}
         </div>
 
         <h2 style={{ margin: "0 0 5px 0", fontSize: "24px" }}>{user?.name || "User Name"}</h2>
@@ -159,6 +192,30 @@ export default function Profile() {
                 <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>Update</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* View Profile Photo Modal */}
+      {isViewPhotoModalOpen && (
+        <div 
+          onClick={() => setViewPhotoModalOpen(false)}
+          style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.85)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 2000, backdropFilter: "blur(5px)" }}
+        >
+          <div onClick={(e) => e.stopPropagation()} style={{ position: "relative", maxWidth: "90vw", maxHeight: "90vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <button 
+              onClick={() => setViewPhotoModalOpen(false)} 
+              style={{ position: "absolute", top: "-40px", right: "0", background: "none", border: "none", color: "white", fontSize: "35px", cursor: "pointer", zIndex: 2010 }}
+            >
+              &times;
+            </button>
+            {profilePic ? (
+              <img src={profilePic} alt="Profile Full View" style={{ maxWidth: "100%", maxHeight: "85vh", borderRadius: "10px", objectFit: "contain", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }} />
+            ) : (
+              <div style={{ width: "250px", height: "250px", background: "var(--card-bg)", color: "var(--text)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "100px", borderRadius: "50%" }}>
+                {user?.name?.charAt(0).toUpperCase() || "U"}
+              </div>
+            )}
           </div>
         </div>
       )}
