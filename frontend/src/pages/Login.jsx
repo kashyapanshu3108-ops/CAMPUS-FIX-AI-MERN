@@ -67,7 +67,12 @@ export default function Login() {
             onChange={handleChange} 
           />
 
-          <label>Password</label>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "5px" }}>
+            <label style={{ margin: 0 }}>Password</label>
+            <Link to="/forgot-password" style={{ fontSize: "13px", color: "#6366f1", textDecoration: "none" }}>
+              Forgot Password?
+            </Link>
+          </div>
           <div style={{ position: "relative", width: "100%" }}>
             <input 
               ref={passwordRef}
