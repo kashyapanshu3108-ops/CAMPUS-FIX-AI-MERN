@@ -1,11 +1,11 @@
-import { useState , useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-// 1. Icon import karein
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export default function Login() {
-  const { login } = useAuth();
+  // Yahan user ko bhi extract kiya hai auth context se
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -14,7 +14,14 @@ export default function Login() {
   const passwordRef = useRef(null);
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
- const handleSubmit = async (e) => {
+  // Agar user pehle se logged in hai toh direct dashboard bhej do
+  useEffect(() => {
+    if (user) {
+      navigate(user.role === "admin" ? "/admin" : "/dashboard");
+    }
+  }, [user, navigate]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -30,7 +37,6 @@ export default function Login() {
     if (result.success) {
       navigate(result.user.role === "admin" ? "/admin" : "/dashboard");
     } else {
-    
       setError(result.message);
       setForm({ ...form, password: "" }); 
       setShowPassword(false); 
@@ -62,7 +68,6 @@ export default function Login() {
           />
 
           <label>Password</label>
-          {/* 3. Password input aur icon ko wrap karein */}
           <div style={{ position: "relative", width: "100%" }}>
             <input 
               ref={passwordRef}
@@ -71,14 +76,13 @@ export default function Login() {
               placeholder="••••••••" 
               value={form.password} 
               onChange={handleChange} 
-              onFocus={(e) => (e.target.placeholder = "")} // Click karte hi placeholder clear ho jayega
-              onBlur={(e) => (e.target.placeholder = "••••••••")} // Bahar click karne par wapas aa jayega (agar empty hai)
-              style={{ width: "100%", paddingRight: "40px", boxSizing: "border-box" }} // Icon ke liye space choda hai
+              onFocus={(e) => (e.target.placeholder = "")} 
+              onBlur={(e) => (e.target.placeholder = "••••••••")} 
+              style={{ width: "100%", paddingRight: "40px", boxSizing: "border-box" }} 
             />
             
-            {/* 4. Toggle Button */}
             <button
-              type="button" // form submit na ho jaye isliye type="button" zaroori hai
+              type="button" 
               onClick={() => setShowPassword(!showPassword)}
               style={{
                 position: "absolute",

@@ -21,7 +21,7 @@ export default function Landing() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const goToReport = () => navigate(user ? "/report" : "/register");
+  const goToReport = () => navigate(user ? "/report" : "/login");
   const goToDashboard = () => navigate(user ? (user.role === "admin" ? "/admin" : "/dashboard") : "/login");
 
   return (
@@ -52,10 +52,20 @@ export default function Landing() {
           campus problems to the right department.
         </p>
         <div className="hero-actions">
-          <button className="btn btn-primary btn-lg" onClick={goToReport}>Report an Issue</button>
-          <button className="btn btn-ghost btn-lg" onClick={() => navigate(user ? goToDashboard : "/login")}>
-            Login
+          <button className="btn btn-primary btn-lg" onClick={goToReport}>
+            Report an Issue
           </button>
+          
+          {/* Yahan Conditional Rendering lagayi hai */}
+          {!user ? (
+            <button className="btn btn-ghost btn-lg" onClick={() => navigate("/login")}>
+              Login
+            </button>
+          ) : (
+            <button className="btn btn-ghost btn-lg" onClick={goToDashboard}>
+              Go to Dashboard
+            </button>
+          )}
         </div>
       </section>
 
