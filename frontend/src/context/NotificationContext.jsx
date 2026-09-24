@@ -39,9 +39,24 @@ export function NotificationProvider({ children }) {
     fetchNotifications();
   };
 
+  // NAYA FUNCTION: Frontend par turant list clear karne ke liye
+  const clearAll = async () => {
+    // 1. UI se turant hata do (taaki user ko fast lage)
+    setNotifications([]);
+    setUnreadCount(0);
+    
+    // 2. Backend ko delete karne ki request bhejo
+    try {
+      await api.delete("/notifications/clear");
+    } catch (error) {
+      console.error("Error clearing notifications", error);
+    }
+  };
+
   return (
     <NotificationContext.Provider
-      value={{ notifications, unreadCount, fetchNotifications, markAsRead, markAllAsRead }}
+      // YAHAN clearAll KO ADD KIYA HAI TAAKI BAAKI FILES USE KAR SAKEIN
+      value={{ notifications, unreadCount, fetchNotifications, markAsRead, markAllAsRead, clearAll }}
     >
       {children}
     </NotificationContext.Provider>

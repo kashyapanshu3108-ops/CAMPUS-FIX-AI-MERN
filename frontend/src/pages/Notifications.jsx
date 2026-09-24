@@ -12,7 +12,8 @@ const TYPE_ICON = {
 };
 
 export default function Notifications() {
-  const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
+  // Yahan clearAll extract kiya hai
+  const { notifications, unreadCount, markAsRead, markAllAsRead, clearAll } = useNotifications();
   const navigate = useNavigate();
 
   return (
@@ -22,11 +23,35 @@ export default function Notifications() {
           <h2 style={{ margin: 0 }}>Activity Feed</h2>
           <p className="muted small" style={{ margin: "5px 0 0" }}>You have {unreadCount} unread messages</p>
         </div>
-        {unreadCount > 0 && (
-          <button className="btn btn-ghost" onClick={markAllAsRead} style={{ fontSize: "12px", padding: "6px 12px" }}>
-            ✔ Mark all as read
-          </button>
-        )}
+        
+        {/* Naye Buttons ka Group */}
+        <div style={{ display: "flex", gap: "10px" }}>
+          {unreadCount > 0 && (
+            <button className="btn btn-ghost" onClick={markAllAsRead} style={{ fontSize: "12px", padding: "6px 12px" }}>
+              ✔ Mark all as read
+            </button>
+          )}
+          {/* Naya Clear All Button */}
+         {notifications.length > 0 && (
+            <button 
+              onClick={clearAll} 
+              style={{ 
+                fontSize: "12px", 
+                padding: "6px 12px", 
+                color: "#ff4d4f", 
+                border: "1px solid #ff4d4f", 
+                background: "transparent", 
+                borderRadius: "6px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px"
+              }}
+            >
+              🗑️ Clear All
+            </button>
+          )}
+        </div>
       </div>
 
       <div style={{ maxWidth: "800px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "12px" }}>

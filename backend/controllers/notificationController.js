@@ -29,4 +29,12 @@ const markAllAsRead = asyncHandler(async (req, res) => {
   res.json({ success: true, message: "All notifications marked as read." });
 });
 
-module.exports = { getNotifications, markAsRead, markAllAsRead };
+// DELETE /api/notifications/clear (NAYA FUNCTION)
+const clearAllNotifications = asyncHandler(async (req, res) => {
+  // Yeh user ki saari notifications ko permanently database se uda dega
+  await Notification.deleteMany({ user: req.user._id });
+  res.json({ success: true, message: "All notifications cleared permanently." });
+});
+
+// AAKHRI LINE MEIN NAYA FUNCTION EXPORT KIYA HAI
+module.exports = { getNotifications, markAsRead, markAllAsRead, clearAllNotifications };

@@ -18,8 +18,7 @@ export default function EmergencyContacts() {
 
         <div style={{ display: "grid", gap: "15px", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
           {contacts.map((contact) => (
-            <div key={contact.id} style={{ border: "1px solid #e5e7eb", borderRadius: "8px", padding: "15px", backgroundColor: "#fff" }}>
-              <h3 style={{ margin: "0 0 5px 0", color: "#4f46e5" }}>{contact.role}</h3>
+<div key={contact.id} className="card-panel" style={{ padding: "15px", borderRadius: "8px" }}>              <h3 style={{ margin: "0 0 5px 0", color: "#4f46e5" }}>{contact.role}</h3>
               <p style={{ margin: "0 0 10px 0", fontWeight: "bold" }}>{contact.name}</p>
               <div style={{ display: "flex", gap: "10px" }}>
                 <a href={`tel:${contact.phone}`} className="btn btn-primary" style={{ textDecoration: "none", padding: "8px 12px", fontSize: "14px" }}>
